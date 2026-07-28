@@ -1,0 +1,23 @@
+# requirements/cloud.txt
+# CLOUD PROVIDER DEPENDENCIES
+# Only needed if deploying to cloud platforms
+
+-r base.txt
+
+# ===== AWS (Amazon Web Services) =====
+boto3>=1.26.0                    # AWS SDK - S3, EC2, Lambda, etc.
+awscli>=1.27.0                   # AWS CLI tools
+
+# ===== Google Cloud Platform =====
+google-cloud-storage>=2.7.0      # Cloud Storage
+google-cloud-firestore>=2.7.0    # Firestore database
+
+# ===== Microsoft Azure =====
+azure-storage-blob>=12.14.0      # Blob Storage
+azure-cosmos>=4.3.0              # Cosmos DB
+
+# ===== Cloudflare =====
+cloudflare>=2.9.0                # Cloudflare API for CDN/Workers
+
+# ===== General =====
+python-dotenv>=0.21.0            # Environment variables

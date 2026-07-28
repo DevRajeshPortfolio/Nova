@@ -1,0 +1,15 @@
+# Database dependencies
+-r base.txt
+
+# PostgreSQL
+psycopg2-binary>=2.9.0
+asyncpg>=0.27.0
+sqlalchemy>=2.0.0
+alembic>=1.9.0
+
+# MySQL
+mysqlclient>=2.1.0
+
+# MongoDB
+pymongo>=4.3.0
+motor>=3.1.0

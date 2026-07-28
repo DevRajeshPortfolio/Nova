@@ -1,0 +1,283 @@
+# infrastructure.txt
+# External Infrastructure Dependencies for Nova
+# These are NOT Python packages - they need to be installed separately!
+
+# ============================================================
+# DATABASES
+# ============================================================
+
+# PostgreSQL (Recommended for production)
+# - Primary relational database
+# - Version: 13.x, 14.x, 15.x
+# - Install: https://www.postgresql.org/download/
+# - Docker: postgres:15-alpine
+# - Port: 5432
+# - Nova connection: postgresql://user:pass@host:5432/dbname
+postgresql>=13.0
+
+# MySQL (Alternative relational DB)
+# - Version: 8.x
+# - Install: https://dev.mysql.com/downloads/
+# - Docker: mysql:8
+# - Port: 3306
+# - Nova connection: mysql://user:pass@host:3306/dbname
+mysql>=8.0
+
+# MongoDB (Document database)
+# - Version: 5.x, 6.x
+# - Install: https://www.mongodb.com/try/download/community
+# - Docker: mongo:6
+# - Port: 27017
+# - Nova connection: mongodb://host:27017
+mongodb>=5.0
+
+# ============================================================
+# CACHING
+# ============================================================
+
+# Redis (Primary cache)
+# - Version: 7.x
+# - Install: https://redis.io/download
+# - Docker: redis:7-alpine
+# - Port: 6379
+# - Nova connection: redis://host:6379
+redis>=7.0
+
+# Memcached (Alternative cache)
+# - Version: 1.6.x
+# - Install: https://memcached.org/downloads
+# - Docker: memcached:1.6
+# - Port: 11211
+# - Nova connection: memcached://host:11211
+memcached>=1.6.0
+
+# ============================================================
+# MESSAGE QUEUES & STREAMING
+# ============================================================
+
+# Apache Kafka (Event streaming)
+# - Version: 3.x
+# - Install: https://kafka.apache.org/downloads
+# - Docker: confluentinc/cp-kafka:latest
+# - Port: 9092 (broker), 2181 (zookeeper)
+# - Nova connection: kafka://host:9092
+kafka>=3.0
+
+# RabbitMQ (Message broker)
+# - Version: 3.10.x
+# - Install: https://www.rabbitmq.com/download.html
+# - Docker: rabbitmq:3-management
+# - Port: 5672 (AMQP), 15672 (management)
+# - Nova connection: amqp://host:5672
+rabbitmq>=3.10
+
+# ============================================================
+# SEARCH ENGINES
+# ============================================================
+
+# Elasticsearch (Full-text search)
+# - Version: 8.x
+# - Install: https://www.elastic.co/downloads/elasticsearch
+# - Docker: elasticsearch:8
+# - Port: 9200 (HTTP), 9300 (transport)
+# - Nova connection: elasticsearch://host:9200
+elasticsearch>=8.0
+
+# ============================================================
+# SERVICE DISCOVERY
+# ============================================================
+
+# Consul (Service discovery & config)
+# - Version: 1.14.x
+# - Install: https://www.consul.io/downloads
+# - Docker: consul:1.14
+# - Port: 8500 (HTTP), 8600 (DNS)
+consul>=1.14
+
+# etcd (Distributed key-value store)
+# - Version: 3.5.x
+# - Install: https://etcd.io/docs/latest/install/
+# - Docker: etcd:3.5
+# - Port: 2379 (client), 2380 (peer)
+etcd>=3.5
+
+# ============================================================
+# LOAD BALANCING & REVERSE PROXY
+# ============================================================
+
+# Nginx (Load balancer / reverse proxy)
+# - Version: 1.22.x, 1.24.x
+# - Install: https://nginx.org/en/download.html
+# - Docker: nginx:1.24-alpine
+# - Port: 80 (HTTP), 443 (HTTPS)
+nginx>=1.22
+
+# HAProxy (Load balancer)
+# - Version: 2.6.x
+# - Install: https://www.haproxy.org/download/
+# - Docker: haproxy:2.6
+# - Port: 80 (HTTP), 443 (HTTPS)
+haproxy>=2.6
+
+# ============================================================
+# MONITORING & OBSERVABILITY
+# ============================================================
+
+# Prometheus (Metrics collection)
+# - Version: 2.40.x
+# - Install: https://prometheus.io/download/
+# - Docker: prom/prometheus:latest
+# - Port: 9090
+prometheus>=2.40
+
+# Grafana (Metrics visualization)
+# - Version: 9.x
+# - Install: https://grafana.com/grafana/download
+# - Docker: grafana/grafana:latest
+# - Port: 3000
+grafana>=9.0
+
+# Jaeger (Distributed tracing)
+# - Version: 1.40.x
+# - Install: https://www.jaegertracing.io/download/
+# - Docker: jaegertracing/all-in-one:latest
+# - Port: 16686 (UI), 4318 (OTLP)
+jaeger>=1.40
+
+# Promtail (Log collection)
+# - Version: 2.7.x
+# - Install: https://grafana.com/oss/promtail/
+# - Docker: grafana/promtail:latest
+promtail>=2.7
+
+# Loki (Log aggregation)
+# - Version: 2.7.x
+# - Install: https://grafana.com/oss/loki/
+# - Docker: grafana/loki:latest
+# - Port: 3100
+loki>=2.7
+
+# ============================================================
+# CONTAINER ORCHESTRATION
+# ============================================================
+
+# Docker (Container runtime)
+# - Version: 20.10.x, 23.x
+# - Install: https://docs.docker.com/get-docker/
+docker>=20.10
+
+# Kubernetes (Container orchestration)
+# - Version: 1.25.x, 1.26.x
+# - Install: https://kubernetes.io/releases/download/
+# - Tools: kubectl, kubeadm, minikube
+kubernetes>=1.25
+
+# Helm (Kubernetes package manager)
+# - Version: 3.11.x
+# - Install: https://helm.sh/docs/intro/install/
+helm>=3.11
+
+# ============================================================
+# CDN & NETWORKING
+# ============================================================
+
+# Cloudflare (CDN & DNS)
+# - Account required
+# - API key needed for automation
+cloudflare
+
+# AWS CloudFront (AWS CDN)
+# - AWS account required
+# - IAM credentials needed
+aws-cloudfront
+
+# ============================================================
+# SSL/TLS CERTIFICATES
+# ============================================================
+
+# Let's Encrypt (Free SSL certificates)
+# - Tool: Certbot
+# - Install: https://certbot.eff.org/
+# - Docker: certbot/certbot
+certbot
+
+# ============================================================
+# DEVELOPMENT DATABASES (Testing Only)
+# ============================================================
+
+# SQLite (Embedded DB for testing)
+# - Built into Python
+# - No installation needed
+# - Nova connection: sqlite:///nova.db
+sqlite3
+
+# ============================================================
+# RECOMMENDED SETUP
+# ============================================================
+# 
+# For Production:
+# PostgreSQL + Redis + Kafka + Consul + Nginx + Prometheus + Grafana
+# 
+# For Development:
+# SQLite (or PostgreSQL) + Redis (optional) + Everything via Docker
+# 
+# For Testing:
+# SQLite + Docker Compose for integration tests
+
+# ============================================================
+# DOCKER COMPOSE QUICK START
+# ============================================================
+# docker-compose.yml
+# 
+# version: '3.8'
+# services:
+#   postgres:
+#     image: postgres:15-alpine
+#     environment:
+#       POSTGRES_USER: nova
+#       POSTGRES_PASSWORD: nova_pass
+#       POSTGRES_DB: nova
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - pg_data:/var/lib/postgresql/data
+#   
+#   redis:
+#     image: redis:7-alpine
+#     ports:
+#       - "6379:6379"
+#   
+#   kafka:
+#     image: confluentinc/cp-kafka:latest
+#     environment:
+#       KAFKA_BROKER_ID: 1
+#       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+#     ports:
+#       - "9092:9092"
+#     depends_on:
+#       - zookeeper
+#   
+#   zookeeper:
+#     image: confluentinc/cp-zookeeper:latest
+#     environment:
+#       ZOOKEEPER_CLIENT_PORT: 2181
+#     ports:
+#       - "2181:2181"
+#   
+#   prometheus:
+#     image: prom/prometheus:latest
+#     ports:
+#       - "9090:9090"
+#     volumes:
+#       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#   
+#   grafana:
+#     image: grafana/grafana:latest
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - prometheus
+# 
+# volumes:
+#   pg_data:

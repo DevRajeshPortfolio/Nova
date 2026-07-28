@@ -1,0 +1,9 @@
+# Security dependencies
+-r base.txt
+
+cryptography>=39.0.0
+python-jose>=3.3.0
+oauthlib>=3.2.0
+authlib>=1.2.0
+passlib>=1.7.4
+bcrypt>=4.0.0

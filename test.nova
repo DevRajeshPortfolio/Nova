@@ -1,0 +1,513 @@
+# calculator.nova
+# Interactive Calculator - Nova Programming Language
+
+page "Calculator":
+    title "Nova Calculator"
+    background "#1a1a2e"
+    
+    style:
+        .calculator-container
+            max-width: 400px
+            margin: 50px auto
+            padding: 20px
+            background: #16213e
+            border-radius: 20px
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5)
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+        
+        .calculator-display
+            background: #0f0f23
+            padding: 20px
+            border-radius: 12px
+            margin-bottom: 20px
+            min-height: 100px
+            text-align: right
+            border: 1px solid #2a2a4a
+        
+        .calculator-expression
+            color: #8888aa
+            font-size: 14px
+            min-height: 24px
+            word-break: break-all
+            font-family: 'Courier New', monospace
+        
+        .calculator-result
+            color: #00d4ff
+            font-size: 36px
+            font-weight: bold
+            min-height: 48px
+            font-family: 'Courier New', monospace
+            text-shadow: 0 0 20px rgba(0,212,255,0.3)
+        
+        .calculator-memory
+            color: #ffd700
+            font-size: 12px
+            min-height: 18px
+            text-align: left
+        
+        .calculator-buttons
+            display: grid
+            grid-template-columns: repeat(4, 1fr)
+            gap: 10px
+        
+        .calc-btn
+            padding: 20px
+            font-size: 20px
+            border: none
+            border-radius: 12px
+            cursor: pointer
+            transition: all 0.2s ease
+            font-weight: 600
+            color: white
+            background: #1a1a3e
+            box-shadow: 0 4px 0 #0a0a1e
+        
+        .calc-btn:hover
+            transform: translateY(-2px)
+            box-shadow: 0 6px 0 #0a0a1e
+        
+        .calc-btn:active
+            transform: translateY(4px)
+            box-shadow: 0 0px 0 #0a0a1e
+        
+        .calc-btn-number
+            background: #2a2a5a
+        
+        .calc-btn-number:hover
+            background: #3a3a7a
+        
+        .calc-btn-operator
+            background: #1a3a6a
+        
+        .calc-btn-operator:hover
+            background: #2a4a8a
+        
+        .calc-btn-equals
+            background: #007bff
+            box-shadow: 0 4px 0 #0056b3
+        
+        .calc-btn-equals:hover
+            background: #0088ff
+            box-shadow: 0 6px 0 #0056b3
+        
+        .calc-btn-clear
+            background: #6a1a1a
+            box-shadow: 0 4px 0 #4a0a0a
+        
+        .calc-btn-clear:hover
+            background: #8a2a2a
+            box-shadow: 0 6px 0 #4a0a0a
+        
+        .calc-btn-memory
+            background: #2a4a2a
+            box-shadow: 0 4px 0 #1a3a1a
+        
+        .calc-btn-memory:hover
+            background: #3a6a3a
+            box-shadow: 0 6px 0 #1a3a1a
+        
+        .calc-btn-function
+            background: #4a2a4a
+            box-shadow: 0 4px 0 #3a1a3a
+        
+        .calc-btn-function:hover
+            background: #6a3a6a
+            box-shadow: 0 6px 0 #3a1a3a
+        
+        .calc-btn-zero
+            grid-column: span 2
+        
+        .calculator-history
+            margin-top: 20px
+            max-height: 150px
+            overflow-y: auto
+            background: #0f0f23
+            border-radius: 12px
+            padding: 10px
+            border: 1px solid #2a2a4a
+        
+        .calculator-history-title
+            color: #8888aa
+            font-size: 12px
+            margin-bottom: 8px
+        
+        .calculator-history-item
+            color: #aaaacc
+            font-size: 14px
+            padding: 4px 0
+            border-bottom: 1px solid #1a1a3e
+            font-family: 'Courier New', monospace
+        
+        .calculator-history-item .h-expr
+            color: #666688
+        
+        .calculator-history-item .h-result
+            color: #00d4ff
+            float: right
+        
+        .calculator-status
+            color: #666688
+            font-size: 12px
+            text-align: center
+            margin-top: 15px
+            padding: 10px
+            border-top: 1px solid #1a1a3e
+        
+        .calculator-history::-webkit-scrollbar
+            width: 4px
+        
+        .calculator-history::-webkit-scrollbar-track
+            background: #0f0f23
+        
+        .calculator-history::-webkit-scrollbar-thumb
+            background: #2a2a5a
+            border-radius: 2px
+        
+        .keyboard-shortcut
+            font-size: 10px
+            color: #444466
+            display: block
+            margin-top: 2px
+    
+    state expression = ""
+    state result = "0"
+    state memory = 0
+    state has_memory = false
+    state history = []
+    state last_operation = ""
+    state is_new_entry = true
+    state error = false
+    state current_operation = ""
+    state previous_value = 0
+    state operator_pending = false
+    state display_mode = "result"
+    
+    action append_digit(digit):
+        if error:
+            set error = false
+            set expression = ""
+            set result = "0"
+            set is_new_entry = true
+        
+        if is_new_entry:
+            set expression = digit
+            set result = digit
+            set is_new_entry = false
+        else:
+            if len(expression) < 20:
+                set expression = expression + digit
+                set result = expression
+    
+    action append_decimal:
+        if error:
+            set error = false
+            set expression = "0."
+            set result = "0."
+            set is_new_entry = false
+            return
+        
+        if is_new_entry:
+            set expression = "0."
+            set result = "0."
+            set is_new_entry = false
+        else:
+            if "." not in expression:
+                set expression = expression + "."
+                set result = expression
+    
+    action set_operator(op):
+        if expression == "" and previous_value == 0:
+            return
+        
+        if operator_pending:
+            calculate_result
+        
+        set current_operation = op
+        set previous_value = float(result)
+        set operator_pending = true
+        set is_new_entry = true
+        set last_operation = op
+        set display_mode = "expression"
+    
+    action calculate_result:
+        if not operator_pending:
+            return
+        
+        if expression == "":
+            set expression = str(previous_value)
+            return
+        
+        try:
+            current_val = float(expression)
+            
+            if current_operation == "+":
+                new_result = previous_value + current_val
+            elif current_operation == "-":
+                new_result = previous_value - current_val
+            elif current_operation == "×":
+                new_result = previous_value * current_val
+            elif current_operation == "÷":
+                if current_val == 0:
+                    set error = true
+                    set result = "Error: Division by zero"
+                    set expression = ""
+                    set operator_pending = false
+                    return
+                new_result = previous_value / current_val
+            elif current_operation == "^":
+                new_result = previous_value ** current_val
+            elif current_operation == "%":
+                new_result = previous_value % current_val
+            else:
+                new_result = current_val
+            
+            if new_result.is_integer():
+                result_str = str(int(new_result))
+            else:
+                result_str = str(round(new_result, 10))
+                if "." in result_str:
+                    result_str = result_str.rstrip('0').rstrip('.')
+            
+            history_expr = str(previous_value) + " " + current_operation + " " + str(current_val) + " = " + result_str
+            add_history(history_expr)
+            
+            set result = result_str
+            set expression = result_str
+            set previous_value = new_result
+            set operator_pending = false
+            set current_operation = ""
+            set is_new_entry = true
+            set display_mode = "result"
+            set error = false
+            
+        except Exception as e:
+            set error = true
+            set result = "Error: " + str(e)
+            set expression = ""
+            set operator_pending = false
+    
+    action clear_all:
+        set expression = ""
+        set result = "0"
+        set previous_value = 0
+        set operator_pending = false
+        set current_operation = ""
+        set is_new_entry = true
+        set error = false
+        set display_mode = "result"
+        set last_operation = ""
+    
+    action clear_entry:
+        if error:
+            clear_all
+            return
+        set expression = ""
+        set result = "0"
+        set is_new_entry = true
+    
+    action backspace:
+        if error:
+            clear_all
+            return
+        
+        if is_new_entry:
+            return
+        
+        if len(expression) > 1:
+            set expression = expression[:-1]
+            if expression == "":
+                set expression = "0"
+            set result = expression
+        else:
+            set expression = "0"
+            set result = "0"
+            set is_new_entry = true
+    
+    action memory_store:
+        try:
+            val = float(result)
+            set memory = val
+            set has_memory = true
+            set result = "M✓ " + result
+        except:
+            pass
+    
+    action memory_recall:
+        if has_memory:
+            set expression = str(memory)
+            set result = str(memory)
+            set is_new_entry = False
+            notification "Memory recalled: " + str(memory)
+    
+    action memory_clear:
+        set memory = 0
+        set has_memory = false
+        notification "Memory cleared"
+    
+    action memory_add:
+        try:
+            val = float(result)
+            set memory = memory + val
+            set has_memory = true
+            notification "Added to memory: " + str(val)
+        except:
+            pass
+    
+    action memory_subtract:
+        try:
+            val = float(result)
+            set memory = memory - val
+            set has_memory = true
+            notification "Subtracted from memory: " + str(val)
+        except:
+            pass
+    
+    action add_history(entry):
+        history_items = history
+        history_items.append(entry)
+        if len(history_items) > 50:
+            history_items = history_items[-50:]
+        set history = history_items
+    
+    action clear_history:
+        set history = []
+        notification "History cleared"
+    
+    action handle_keyboard(key):
+        if key >= "0" and key <= "9":
+            append_digit(key)
+        elif key == ".":
+            append_decimal
+        elif key == "+":
+            set_operator("+")
+        elif key == "-":
+            set_operator("-")
+        elif key == "*":
+            set_operator("×")
+        elif key == "/":
+            set_operator("÷")
+        elif key == "Enter" or key == "=":
+            calculate_result
+        elif key == "Backspace":
+            backspace
+        elif key == "Escape":
+            clear_all
+        elif key == "c" or key == "C":
+            clear_all
+        elif key == "m" or key == "M":
+            memory_recall
+    
+    when document keypressed:
+        handle_keyboard(key)
+    
+    when document enterpressed:
+        calculate_result
+    
+    when document escapepressed:
+        clear_all
+    
+    div class="calculator-container":
+        
+        div class="calculator-display":
+            div class="calculator-memory":
+                if has_memory:
+                    text "M = " + str(memory)
+                else:
+                    text " "
+            
+            div class="calculator-expression":
+                if display_mode == "expression" and last_operation:
+                    text str(previous_value) + " " + last_operation
+                else:
+                    text expression if expression else " "
+            
+            div class="calculator-result":
+                if error:
+                    text result
+                else:
+                    text result if result else "0"
+        
+        div class="calculator-buttons":
+            
+            button "MC" class="calc-btn calc-btn-memory" when clicked:
+                memory_clear
+            
+            button "MR" class="calc-btn calc-btn-memory" when clicked:
+                memory_recall
+            
+            button "M+" class="calc-btn calc-btn-memory" when clicked:
+                memory_add
+            
+            button "M-" class="calc-btn calc-btn-memory" when clicked:
+                memory_subtract
+            
+            button "AC" class="calc-btn calc-btn-clear" when clicked:
+                clear_all
+            
+            button "CE" class="calc-btn calc-btn-clear" when clicked:
+                clear_entry
+            
+            button "⌫" class="calc-btn calc-btn-function" when clicked:
+                backspace
+            
+            button "÷" class="calc-btn calc-btn-operator" when clicked:
+                set_operator("÷")
+            
+            button "7" class="calc-btn calc-btn-number" when clicked:
+                append_digit("7")
+            
+            button "8" class="calc-btn calc-btn-number" when clicked:
+                append_digit("8")
+            
+            button "9" class="calc-btn calc-btn-number" when clicked:
+                append_digit("9")
+            
+            button "×" class="calc-btn calc-btn-operator" when clicked:
+                set_operator("×")
+            
+            button "4" class="calc-btn calc-btn-number" when clicked:
+                append_digit("4")
+            
+            button "5" class="calc-btn calc-btn-number" when clicked:
+                append_digit("5")
+            
+            button "6" class="calc-btn calc-btn-number" when clicked:
+                append_digit("6")
+            
+            button "-" class="calc-btn calc-btn-operator" when clicked:
+                set_operator("-")
+            
+            button "1" class="calc-btn calc-btn-number" when clicked:
+                append_digit("1")
+            
+            button "2" class="calc-btn calc-btn-number" when clicked:
+                append_digit("2")
+            
+            button "3" class="calc-btn calc-btn-number" when clicked:
+                append_digit("3")
+            
+            button "+" class="calc-btn calc-btn-operator" when clicked:
+                set_operator("+")
+            
+            button "0" class="calc-btn calc-btn-number calc-btn-zero" when clicked:
+                append_digit("0")
+            
+            button "." class="calc-btn calc-btn-number" when clicked:
+                append_decimal
+            
+            button "=" class="calc-btn calc-btn-equals" when clicked:
+                calculate_result
+        
+        if len(history) > 0:
+            div class="calculator-history":
+                div class="calculator-history-title":
+                    text "📜 History"
+                    button "Clear" class="calc-btn calc-btn-clear" style="float: right; padding: 2px 10px; font-size: 12px;" when clicked:
+                        clear_history
+                
+                for item in history:
+                    div class="calculator-history-item":
+                        text item
+        
+        div class="calculator-status":
+            text "⌨️ Keyboard: 0-9, +, -, *, /, Enter, Backspace, Escape | M for memory"

@@ -1,0 +1,61 @@
+# dev-requirements.txt
+# Development tools for Nova developers
+# 🚫 DO NOT INSTALL IN PRODUCTION!
+
+# ===== Core Development =====
+-r requirements/development.txt
+
+# ===== Code Quality =====
+black>=22.12.0              # Code formatter
+isort>=5.11.0               # Import sorter
+flake8>=6.0.0               # Linter
+pylint>=2.15.0              # Advanced linter
+mypy>=1.0.0                 # Type checker
+bandit>=1.7.0               # Security linter
+
+# ===== Pre-commit Hooks =====
+pre-commit>=2.20.0          # Git hooks manager
+
+# ===== Debugging =====
+ipython>=8.0.0              # Better Python REPL
+pdbpp>=0.10.0               # Better debugger
+better-exceptions>=0.3.0    # Better error messages
+icecream>=2.1.0             # Better print debugging
+rich>=13.0.0                # Beautiful console output
+debugpy>=1.6.0              # VS Code debugger
+
+# ===== Profiling =====
+line-profiler>=4.0.0        # Line-by-line profiling
+memory-profiler>=0.60.0     # Memory profiling
+snakeviz>=2.2.0             # Profiling visualization
+py-spy>=0.3.0               # Sampling profiler
+
+# ===== Testing (Dev extras) =====
+pytest-watch>=4.2.0         # Auto-run tests on change
+pytest-sugar>=0.9.0         # Better test output
+pytest-xdist>=3.1.0         # Parallel testing
+coverage>=7.0.0             # Code coverage
+
+# ===== Development Utilities =====
+watchdog>=2.1.0             # File watcher
+python-dotenv>=0.21.0       # Environment variables
+pip-tools>=6.12.0           # Dependency management
+virtualenv>=20.0.0          # Virtual environments
+pipenv>=2023.0.0            # Dependency manager
+poetry>=1.4.0               # Modern dependency manager
+
+# ===== Documentation =====
+sphinx>=6.0.0               # Documentation generator
+sphinx-rtd-theme>=1.2.0     # ReadTheDocs theme
+myst-parser>=0.18.0         # Markdown for Sphinx
+mkdocs>=1.4.0               # Alternative docs generator
+mkdocs-material>=9.0.0      # Material theme
+
+# ===== Jupyter =====
+jupyter>=1.0.0              # Jupyter notebooks
+jupyterlab>=3.5.0           # JupyterLab
+ipywidgets>=8.0.0           # Interactive widgets
+
+# ===== API Development =====
+httpie>=3.2.0               # CLI HTTP client
+curlify>=2.2.0              # Convert Python requests to curl

@@ -1,0 +1,6 @@
+# Caching dependencies
+-r base.txt
+
+redis>=4.5.0
+hiredis>=2.0.0
+cachetools>=5.2.0

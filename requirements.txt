@@ -1,0 +1,6 @@
+# Main requirements file
+# This installs minimal dependencies for development
+
+-r requirements/base.txt
+-r requirements/development.txt
+-r requirements/testing.txt
